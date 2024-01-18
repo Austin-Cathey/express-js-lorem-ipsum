@@ -1,7 +1,8 @@
 <template>
-  <div id="app">
-    <h1>Lorem Ipsum Generator</h1>
-    <button @click="generateLoremIpsum" type="submit">Generate</button>
+  <div>
+    <button @click="generateLoremIpsumParagraphs" type="submit">
+      Generate {{}} Paragraphs
+    </button>
     <div v-if="generatedText">
       <h2>Generated Lorem Ipsum Text:</h2>
       <p v-for="(paragraph, index) in generatedText" :key="index">
@@ -11,13 +12,11 @@
     <div v-if="errorMsg" class="error">
       <p>{{ errorMsg }}. Please try again.</p>
     </div>
-    <LoremIpsumParagraphs />
   </div>
 </template>
 
 <script>
 import { ref } from "vue";
-import LoremIpsumParagraphs from "./LoremIpsumParagraphs.vue";
 
 export default {
   setup() {
@@ -26,7 +25,7 @@ export default {
 
     const generateLoremIpsum = () => {
       errorMsg.value = null;
-      fetch("http://localhost:3000/lorem")
+      fetch("http://localhost:3000/lorem/")
         .then((response) => response.json())
         .then((data) => {
           generatedText.value = data;
@@ -39,7 +38,7 @@ export default {
 
     return {
       generatedText,
-      generateLoremIpsum,
+      generateLoremIpsumParagraphs,
       errorMsg,
     };
   },
