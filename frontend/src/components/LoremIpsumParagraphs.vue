@@ -1,11 +1,16 @@
 <template>
   <div>
+    <input
+      v-model="numberOfParagraphs"
+      type="number"
+      placeholder="How many paragraphs?"
+    /><br />
     <button @click="generateLoremIpsumParagraphs" type="submit">
-      Generate {{}} Paragraphs
+      Generate Paragraphs
     </button>
-    <div v-if="generatedText">
+    <div v-if="generatedParagraphs">
       <h2>Generated Lorem Ipsum Text:</h2>
-      <p v-for="(paragraph, index) in generatedText" :key="index">
+      <p v-for="(paragraph, index) in generatedParagraphs" :key="index">
         {{ paragraph }}
       </p>
     </div>
@@ -15,33 +20,30 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref } from "vue";
 
-export default {
-  setup() {
-    const generatedText = ref(null);
-    const errorMsg = ref(null);
+const numberOfParagraphs = ref("");
+const generatedParagraphs = ref(null);
+const errorMsg = ref(null);
 
-    const generateLoremIpsum = () => {
-      errorMsg.value = null;
-      fetch("http://localhost:3000/lorem/")
-        .then((response) => response.json())
-        .then((data) => {
-          generatedText.value = data;
-        })
-        .catch((error) => {
-          errorMsg.value = error.message;
-          console.error(error);
-        });
-    };
-
-    return {
-      generatedText,
-      generateLoremIpsumParagraphs,
-      errorMsg,
-    };
-  },
+const generateLoremIpsumParagraphs = () => {
+  errorMsg.value = null;
+  fetch("http://localhost:3000/lorem/:" + numberOfParagraphs.value)
+    .then((response) => response.json())
+    .then((data) => {
+      generatedText.value = data;
+      console.log(generatedText);
+    })
+    .catch((error) => {
+      errorMsg.value = error.message;
+      console.error(error);
+    });
+  return {
+    generatedParagraphs,
+    generateLoremIpsumParagraphs,
+    errorMsg,
+  };
 };
 </script>
 

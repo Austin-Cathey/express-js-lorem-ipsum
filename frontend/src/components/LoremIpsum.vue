@@ -11,38 +11,32 @@
     <div v-if="errorMsg" class="error">
       <p>{{ errorMsg }}. Please try again.</p>
     </div>
-    <LoremIpsumParagraphs />
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref } from "vue";
-import LoremIpsumParagraphs from "./LoremIpsumParagraphs.vue";
 
-export default {
-  setup() {
-    const generatedText = ref(null);
-    const errorMsg = ref(null);
+const generatedText = ref(null);
+const errorMsg = ref(null);
 
-    const generateLoremIpsum = () => {
-      errorMsg.value = null;
-      fetch("http://localhost:3000/lorem")
-        .then((response) => response.json())
-        .then((data) => {
-          generatedText.value = data;
-        })
-        .catch((error) => {
-          errorMsg.value = error.message;
-          console.error(error);
-        });
-    };
-
-    return {
-      generatedText,
-      generateLoremIpsum,
-      errorMsg,
-    };
-  },
+const generateLoremIpsum = () => {
+  errorMsg.value = null;
+  fetch("http://localhost:3000/lorem")
+    .then((response) => response.json())
+    .then((data) => {
+      generatedText.value = data;
+      console.log(generatedText);
+    })
+    .catch((error) => {
+      errorMsg.value = error.message;
+      console.error(error);
+    });
+  return {
+    generatedText,
+    generateLoremIpsum,
+    errorMsg,
+  };
 };
 </script>
 
